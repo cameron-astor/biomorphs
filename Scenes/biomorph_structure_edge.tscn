@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm0xq22x8r6x8"]
+
+[ext_resource type="Script" path="res://Scripts/BiomorphStructureEdge.cs" id="1_gp6as"]
+
+[node name="BiomorphStructureEdge" type="Line2D"]
+script = ExtResource("1_gp6as")

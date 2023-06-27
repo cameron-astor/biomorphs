@@ -1,0 +1,256 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0m8me5gogoxw"]
+
+[ext_resource type="Script" path="res://Scenes/GeneEditor.cs" id="1_vc6k7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pwiqj"]
+font_size = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_6pe45"]
+font_size = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_1nuhe"]
+font_size = 10
+
+[node name="GeneEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_vc6k7")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 391.0
+offset_bottom = 250.0
+
+[node name="Generate" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 203.0
+offset_right = 222.0
+offset_bottom = 235.0
+text = "Generate"
+
+[node name="Randomize" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 245.0
+offset_top = 203.0
+offset_right = 342.0
+offset_bottom = 235.0
+text = "Randomize"
+
+[node name="Depth" type="Control" parent="Panel"]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel/Depth"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 30.0
+offset_right = 80.0
+offset_bottom = 47.0
+text = "Depth: "
+label_settings = SubResource("LabelSettings_pwiqj")
+
+[node name="HSlider" type="HSlider" parent="Panel/Depth"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 14.0
+offset_right = 109.0
+offset_bottom = 30.0
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+ticks_on_borders = true
+
+[node name="Scale" type="Control" parent="Panel"]
+layout_mode = 1
+anchors_preset = 0
+offset_top = 40.0
+offset_right = 40.0
+offset_bottom = 80.0
+
+[node name="Label" type="Label" parent="Panel/Scale"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 30.0
+offset_right = 80.0
+offset_bottom = 47.0
+text = "Scale:"
+label_settings = SubResource("LabelSettings_6pe45")
+
+[node name="HSlider" type="HSlider" parent="Panel/Scale"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 14.0
+offset_right = 109.0
+offset_bottom = 30.0
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+ticks_on_borders = true
+
+[node name="Color" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_left = 13.0
+offset_top = 91.0
+offset_right = 53.0
+offset_bottom = 131.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Panel/Color"]
+layout_mode = 0
+offset_right = 69.0
+offset_bottom = 33.0
+
+[node name="Label" type="Label" parent="Panel/Color"]
+layout_mode = 0
+offset_top = 33.0
+offset_right = 96.0
+offset_bottom = 56.0
+text = "Base Color"
+label_settings = SubResource("LabelSettings_1nuhe")
+
+[node name="Color Variation" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_left = 13.0
+offset_top = 154.0
+offset_right = 109.0
+offset_bottom = 194.0
+
+[node name="HSlider" type="HSlider" parent="Panel/Color Variation"]
+layout_mode = 0
+offset_right = 96.0
+offset_bottom = 16.0
+max_value = 255.0
+
+[node name="Label" type="Label" parent="Panel/Color Variation"]
+layout_mode = 0
+offset_top = 16.0
+offset_right = 104.0
+offset_bottom = 39.0
+text = "Color Variation:"
+label_settings = SubResource("LabelSettings_1nuhe")
+
+[node name="Angle Range" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_left = 125.0
+offset_right = 165.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel/Angle Range"]
+layout_mode = 0
+offset_top = 63.0
+offset_right = 104.0
+offset_bottom = 86.0
+text = "Angle:"
+label_settings = SubResource("LabelSettings_1nuhe")
+
+[node name="Min" type="HSlider" parent="Panel/Angle Range"]
+layout_mode = 0
+offset_top = 14.0
+offset_right = 96.0
+offset_bottom = 30.0
+max_value = 360.0
+
+[node name="Max" type="HSlider" parent="Panel/Angle Range"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 96.0
+offset_bottom = 56.0
+max_value = 360.0
+
+[node name="Radius Range" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_left = 125.0
+offset_top = 70.0
+offset_right = 165.0
+offset_bottom = 110.0
+
+[node name="Label" type="Label" parent="Panel/Radius Range"]
+layout_mode = 0
+offset_top = 63.0
+offset_right = 104.0
+offset_bottom = 86.0
+text = "Radius:"
+label_settings = SubResource("LabelSettings_1nuhe")
+
+[node name="Min" type="HSlider" parent="Panel/Radius Range"]
+layout_mode = 0
+offset_top = 14.0
+offset_right = 96.0
+offset_bottom = 30.0
+min_value = 10.0
+value = 10.0
+
+[node name="Max" type="HSlider" parent="Panel/Radius Range"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 96.0
+offset_bottom = 56.0
+min_value = 10.0
+value = 10.0
+
+[node name="Nodes Range" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_left = 245.0
+offset_right = 285.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel/Nodes Range"]
+layout_mode = 0
+offset_top = 63.0
+offset_right = 104.0
+offset_bottom = 86.0
+text = "Nodes:"
+label_settings = SubResource("LabelSettings_1nuhe")
+
+[node name="Min" type="HSlider" parent="Panel/Nodes Range"]
+layout_mode = 0
+offset_top = 14.0
+offset_right = 96.0
+offset_bottom = 30.0
+min_value = 1.0
+max_value = 5.0
+value = 1.0
+
+[node name="Max" type="HSlider" parent="Panel/Nodes Range"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 96.0
+offset_bottom = 56.0
+min_value = 1.0
+max_value = 5.0
+value = 1.0
+
+[node name="Polygon Sides Range" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_left = 245.0
+offset_top = 70.0
+offset_right = 285.0
+offset_bottom = 110.0
+
+[node name="Label" type="Label" parent="Panel/Polygon Sides Range"]
+layout_mode = 0
+offset_top = 63.0
+offset_right = 104.0
+offset_bottom = 86.0
+text = "Polygon Sides:"
+label_settings = SubResource("LabelSettings_1nuhe")
+
+[node name="Min" type="HSlider" parent="Panel/Polygon Sides Range"]
+layout_mode = 0
+offset_top = 14.0
+offset_right = 96.0
+offset_bottom = 30.0
+min_value = 3.0
+max_value = 12.0
+value = 3.0
+
+[node name="Max" type="HSlider" parent="Panel/Polygon Sides Range"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 96.0
+offset_bottom = 56.0
+min_value = 3.0
+max_value = 12.0
+value = 3.0

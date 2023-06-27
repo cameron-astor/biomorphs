@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxqk6bqscm4f2"]
+
+[ext_resource type="Script" path="res://Scenes/Main.cs" id="1_ejw57"]
+[ext_resource type="PackedScene" uid="uid://d0m8me5gogoxw" path="res://Scenes/GeneEditor.tscn" id="2_8e2v7"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_ejw57")
+
+[node name="GeneEditor" parent="." instance=ExtResource("2_8e2v7")]
