@@ -11,7 +11,7 @@ public partial class Biomorph : Node2D
 	// Biomorph components
 	private Genes genes;
 	private BiomorphStructure structure;
-
+	private RandomNumberGenerator rng;
 
 	// Biomorph generation parameters
 	public int DEPTH;
@@ -33,6 +33,8 @@ public partial class Biomorph : Node2D
 		// Load packed scenes
 		biomorphStructureScene = GD.Load<PackedScene>("res://Scenes/BiomorphStructure.tscn");
 		genesScene = GD.Load<PackedScene>("res://Scenes/Genes.tscn");
+
+		rng = new RandomNumberGenerator();
 	}
 
 
@@ -67,7 +69,7 @@ public partial class Biomorph : Node2D
 	private void createBiomorph()
 	{
 		int[] geneticCode = genes.getGenes();
-		RandomNumberGenerator rng = new RandomNumberGenerator();
+		// RandomNumberGenerator rng = new RandomNumberGenerator();
 
 		// Setup structure
 		var instance = biomorphStructureScene.Instantiate();
@@ -95,7 +97,7 @@ public partial class Biomorph : Node2D
 
 					// Node attributes
 					int polygonSides = rng.RandiRange(POLYGON_SIDES_RANGE.X, POLYGON_SIDES_RANGE.Y);
-					int polygonRadius = rng.RandiRange(RADIUS_RANGE.X, RADIUS_RANGE.Y);
+					int polygonRadius = rng.RandiRange((int) SCALE, (int) SCALE);
 
 					// Color
 					int r, g, b;
@@ -137,18 +139,6 @@ public partial class Biomorph : Node2D
 		this.createBiomorph();
 	}
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-
-	}
-
 	public override String ToString()
 	{
 		String result = "";
@@ -163,5 +153,17 @@ public partial class Biomorph : Node2D
 		result += "POLYGON RANGE: " + POLYGON_SIDES_RANGE.ToString() + "\n";
 
 		return result;
+	}
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+
 	}
 }
