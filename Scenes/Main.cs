@@ -64,7 +64,7 @@ public partial class Main : Node
     {
         if (@event.IsActionPressed("ui_accept"))
 		{
-			// b.regenerate();
+
 		}
     }
 }

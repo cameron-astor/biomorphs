@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://yjmt2clg4c4q"]
+
+[ext_resource type="Script" path="res://Scenes/Genome.cs" id="1_ukgs8"]
+
+[node name="Genome" type="Node"]
+script = ExtResource("1_ukgs8")

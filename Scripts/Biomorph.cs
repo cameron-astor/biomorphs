@@ -5,6 +5,8 @@ using System;
 public partial class Biomorph : Node2D
 {
 
+	const int POLYGON_MIN_SIZE = 5;
+
 	private PackedScene biomorphStructureScene;
 	private PackedScene genesScene;
 
@@ -13,19 +15,6 @@ public partial class Biomorph : Node2D
 	private BiomorphStructure structure;
 	private RandomNumberGenerator rng;
 
-	// Biomorph generation parameters
-	public int DEPTH;
-	public float SCALE;
-	public Vector2I ANGLE_RANGE;
-	public Vector2I RADIUS_RANGE;
-	public Vector2I NODES_RANGE;
-
-	public Vector2I POLYGON_SIDES_RANGE;
-	public Vector2I POLYGON_RADIUS_RANGE;
-	public int COLOR_VARIATION_RANGE;
-
-	public int R, G, B;
-	public int SYMMETRY_FACTOR;
 
 	// Constructor
 	public Biomorph()
@@ -50,66 +39,51 @@ public partial class Biomorph : Node2D
 			this.genes = g; // Use provided genes if available
 		}
 
-		int[] geneticCode = this.genes.getGenes();
-
-		// Read genes into Biomorph generation parameters
-		DEPTH = geneticCode[0];
-		SCALE = geneticCode[1];
-		R = geneticCode[2];
-		G = geneticCode[3];
-		B = geneticCode[4];
-		COLOR_VARIATION_RANGE = geneticCode[5];
-		ANGLE_RANGE = new Vector2I(geneticCode[6], geneticCode[7]);
-		RADIUS_RANGE = new Vector2I(geneticCode[8], geneticCode[9]);
-		NODES_RANGE = new Vector2I(geneticCode[10], geneticCode[11]);
-		POLYGON_SIDES_RANGE = new Vector2I(geneticCode[12], geneticCode[13]);
-
 	}
 
 	private void createBiomorph()
 	{
-		int[] geneticCode = genes.getGenes();
-		// RandomNumberGenerator rng = new RandomNumberGenerator();
 
 		// Setup structure
-		var instance = biomorphStructureScene.Instantiate();
-		this.AddChild(instance);
+		BiomorphStructure structure = (BiomorphStructure) biomorphStructureScene.Instantiate();
+		this.AddChild(structure);
 
-		structure = (BiomorphStructure) GetNode<Node2D>("BiomorphStructure");
+		// Parameters which apply globally to structure
+		int CURRENT_LAYER_SCALE = this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.SCALE); // Will change according to SCALE_LAYER_MODIFIER
 
-		BiomorphStructureNode origin = structure.createNode(this.Position); // Create node at biomorph location
+
+		BiomorphStructureNode origin = structure.createNode(this.Position); // Create origin node at biomorph location
+		this.generateNodePolygon(origin, CURRENT_LAYER_SCALE);
 		
 		List<BiomorphStructureNode> nodeStack = new List<BiomorphStructureNode>();
 		nodeStack.Add(origin);
-		for (int i = 0; i < DEPTH; i++)
+		for (int i = 0; i < this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.DEPTH); i++)
 		{
 			List<BiomorphStructureNode> newNodeStack = new List<BiomorphStructureNode>();
 			foreach (BiomorphStructureNode n in nodeStack) // For each node at the current level
 			{
-				int numNodesToCreate = rng.RandiRange(NODES_RANGE.X, NODES_RANGE.Y);
+				int numNodesToCreate = rng.RandiRange(this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.NODES_RANGE_MIN), 
+												      this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.NODES_RANGE_MAX));
 				for (int j = 0; j < numNodesToCreate; j++) // Create new nodes for next level
 				{
 					// Create new node
-					int angle = rng.RandiRange(ANGLE_RANGE.X, ANGLE_RANGE.Y); // Angle of node from origin of current node
-					int radius = rng.RandiRange(RADIUS_RANGE.X, RADIUS_RANGE.Y); // Distance of new node from origin of current node
+					// Angle of node from origin of current node
+					int angle = rng.RandiRange(this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.ANGLE_RANGE_MIN), 
+											   this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.ANGLE_RANGE_MAX));
+
+					// Distance of new node from origin of current node					    
+					int radius = rng.RandiRange(this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.POLYGON_RADIUS_RANGE_MIN), 
+											    this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.POLYGON_RADIUS_RANGE_MAX)); 
 					
 					BiomorphStructureNode newNode = structure.createNodeAtAngle(radius, angle, n.Position);
 
-					// Node attributes
-					int polygonSides = rng.RandiRange(POLYGON_SIDES_RANGE.X, POLYGON_SIDES_RANGE.Y);
-					int polygonRadius = rng.RandiRange((int) SCALE, (int) SCALE);
-
-					// Color
-					int r, g, b;
-					r = R + rng.RandiRange(COLOR_VARIATION_RANGE * -1, COLOR_VARIATION_RANGE); // Slight random variation in gene expression
-					g = G + rng.RandiRange(COLOR_VARIATION_RANGE * -1, COLOR_VARIATION_RANGE);
-					b = B + rng.RandiRange(COLOR_VARIATION_RANGE * -1, COLOR_VARIATION_RANGE);
-
-					Color polygonColor = new Color((float)r/255, (float)g/255, (float)b/255, 1);
-					newNode.createPolygon(polygonRadius, polygonSides, polygonColor);
+					this.generateNodePolygon(newNode, CURRENT_LAYER_SCALE);
 
 					newNodeStack.Add(newNode); // Keep track of new node for next level
 				}
+
+				// Calculate next layer parameters
+				CURRENT_LAYER_SCALE += this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.SCALE_LAYER_MODIFIER);
 
 			}
 
@@ -118,18 +92,34 @@ public partial class Biomorph : Node2D
 
 	}
 
-	public void regenerate()
+	// Handles the generation of the polygon associated with a particular new node.
+	// Takes in a reference to the node and structural attributes.
+	//
+	// POTENTIAL REFACTOR: The structural parameters should maybe be global to the Biomorph (no need for parameters here).
+	private void generateNodePolygon(BiomorphStructureNode newNode, int CURRENT_LAYER_SCALE)
 	{
-		// delete all children
-		foreach (Node n in this.GetChildren())
-		{
-			this.RemoveChild(n);
-			n.QueueFree();
-		}
+		// Node attributes
+		int polygonSides = rng.RandiRange(this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.POLYGON_SIDES_RANGE_MIN), 
+											this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.POLYGON_SIDES_RANGE_MAX));
 
-		this.setupGenes();
+		// Polygon scale							  
+		int scaleVariation = this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.SCALE_VARIATION);
+		int polygonRadius = Math.Max(CURRENT_LAYER_SCALE + rng.RandiRange(scaleVariation * -1, scaleVariation), POLYGON_MIN_SIZE);
 
-		this.createBiomorph();
+		// Color
+		int r, g, b;
+		r = this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.COLOR_R);
+		g = this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.COLOR_G);
+		b = this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.COLOR_B);
+
+		int variation = this.genes.getGeneAttribute(Genome.GENE_ATTRIBUTES.COLOR_VARIATION_RANGE);
+
+		r = r + rng.RandiRange(variation * -1, variation); // Slight random variation in gene expression
+		g = g + rng.RandiRange(variation * -1, variation);
+		b = b + rng.RandiRange(variation * -1, variation);
+
+		Color polygonColor = new Color((float)r/255, (float)g/255, (float)b/255, 1);
+		newNode.createPolygon(polygonRadius, polygonSides, polygonColor);
 	}
 
 	// Generate Biomorph from given Genes.
@@ -143,14 +133,14 @@ public partial class Biomorph : Node2D
 	{
 		String result = "";
 
-		result += "DEPTH: " + DEPTH + "\n";
-		result += "SCALE: " + SCALE + "\n";
-		result += "RGB: " + R + " " + G + " " + B + " " + "\n";
-		result += "COLOR VARIATION RANGE: " + COLOR_VARIATION_RANGE + "\n";
-		result += "ANGLE RANGE: " + ANGLE_RANGE.ToString() + "\n";
-		result += "RADIUS RANGE: " + RADIUS_RANGE.ToString() + "\n";
-		result += "NODE RANGE: " + NODES_RANGE.ToString() + "\n";
-		result += "POLYGON RANGE: " + POLYGON_SIDES_RANGE.ToString() + "\n";
+		// result += "DEPTH: " + DEPTH + "\n";
+		// result += "SCALE: " + SCALE + "\n";
+		// result += "RGB: " + R + " " + G + " " + B + " " + "\n";
+		// result += "COLOR VARIATION RANGE: " + COLOR_VARIATION_RANGE + "\n";
+		// result += "ANGLE RANGE: " + ANGLE_RANGE.ToString() + "\n";
+		// result += "RADIUS RANGE: " + RADIUS_RANGE.ToString() + "\n";
+		// result += "NODE RANGE: " + NODES_RANGE.ToString() + "\n";
+		// result += "POLYGON RANGE: " + POLYGON_SIDES_RANGE.ToString() + "\n";
 
 		return result;
 	}
@@ -166,4 +156,5 @@ public partial class Biomorph : Node2D
 	{
 
 	}
+
 }
