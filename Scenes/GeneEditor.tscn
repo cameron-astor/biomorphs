@@ -1,15 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://d0m8me5gogoxw"]
+[gd_scene load_steps=6 format=3 uid="uid://d0m8me5gogoxw"]
 
 [ext_resource type="Script" path="res://Scenes/GeneEditor.cs" id="1_vc6k7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pwiqj"]
 font_size = 10
 
+[sub_resource type="LabelSettings" id="LabelSettings_1nuhe"]
+font_size = 10
+
 [sub_resource type="LabelSettings" id="LabelSettings_6pe45"]
 font_size = 10
 
-[sub_resource type="LabelSettings" id="LabelSettings_1nuhe"]
-font_size = 10
+[sub_resource type="Theme" id="Theme_m4p54"]
 
 [node name="GeneEditor" type="Control"]
 layout_mode = 3
@@ -18,7 +20,7 @@ script = ExtResource("1_vc6k7")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
-offset_right = 578.0
+offset_right = 585.0
 offset_bottom = 250.0
 
 [node name="Generate" type="Button" parent="Panel"]
@@ -37,7 +39,16 @@ offset_right = 565.0
 offset_bottom = 235.0
 text = "Randomize"
 
+[node name="ScaleMenuButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 177.0
+offset_top = -47.0
+offset_right = 245.0
+offset_bottom = -16.0
+text = "Scale"
+
 [node name="Depth" type="Control" parent="Panel"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 0
 offset_right = 40.0
@@ -61,33 +72,8 @@ offset_bottom = 30.0
 max_value = 10.0
 ticks_on_borders = true
 
-[node name="Scale" type="Control" parent="Panel"]
-layout_mode = 1
-anchors_preset = 0
-offset_left = 359.0
-offset_right = 399.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="Panel/Scale"]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 30.0
-offset_right = 80.0
-offset_bottom = 47.0
-text = "Scale:"
-label_settings = SubResource("LabelSettings_6pe45")
-
-[node name="HSlider" type="HSlider" parent="Panel/Scale"]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 14.0
-offset_right = 109.0
-offset_bottom = 30.0
-min_value = 10.0
-value = 10.0
-ticks_on_borders = true
-
 [node name="Color" type="Control" parent="Panel"]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 13.0
 offset_top = 91.0
@@ -108,6 +94,7 @@ text = "Base Color"
 label_settings = SubResource("LabelSettings_1nuhe")
 
 [node name="Color Variation" type="Control" parent="Panel"]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 13.0
 offset_top = 154.0
@@ -129,6 +116,7 @@ text = "Color Variation:"
 label_settings = SubResource("LabelSettings_1nuhe")
 
 [node name="Angle Range" type="Control" parent="Panel"]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 125.0
 offset_right = 165.0
@@ -157,6 +145,7 @@ offset_bottom = 56.0
 max_value = 360.0
 
 [node name="Radius Range" type="Control" parent="Panel"]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 125.0
 offset_top = 70.0
@@ -188,6 +177,7 @@ min_value = 10.0
 value = 10.0
 
 [node name="Nodes Range" type="Control" parent="Panel"]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 245.0
 offset_right = 285.0
@@ -220,6 +210,7 @@ max_value = 5.0
 value = 1.0
 
 [node name="Polygon Sides Range" type="Control" parent="Panel"]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 245.0
 offset_top = 70.0
@@ -251,3 +242,92 @@ offset_bottom = 56.0
 min_value = 3.0
 max_value = 12.0
 value = 3.0
+
+[node name="Scale" type="Control" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 359.0
+offset_right = 399.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel/Scale"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 30.0
+offset_right = 80.0
+offset_bottom = 47.0
+text = "Scale:"
+label_settings = SubResource("LabelSettings_6pe45")
+
+[node name="HSlider" type="HSlider" parent="Panel/Scale"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 14.0
+offset_right = 109.0
+offset_bottom = 30.0
+min_value = 10.0
+value = 10.0
+ticks_on_borders = true
+
+[node name="Scale Variation" type="Control" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 359.0
+offset_top = 40.0
+offset_right = 399.0
+offset_bottom = 80.0
+
+[node name="Label" type="Label" parent="Panel/Scale Variation"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 30.0
+offset_right = 80.0
+offset_bottom = 47.0
+text = "Scale Variation:"
+label_settings = SubResource("LabelSettings_6pe45")
+
+[node name="HSlider" type="HSlider" parent="Panel/Scale Variation"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 14.0
+offset_right = 109.0
+offset_bottom = 30.0
+ticks_on_borders = true
+
+[node name="Scale Layer Modifier" type="Control" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 359.0
+offset_top = 80.0
+offset_right = 399.0
+offset_bottom = 120.0
+
+[node name="Label" type="Label" parent="Panel/Scale Layer Modifier"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 30.0
+offset_right = 80.0
+offset_bottom = 47.0
+text = "Scale Layer Modifier:"
+label_settings = SubResource("LabelSettings_6pe45")
+
+[node name="HSlider" type="HSlider" parent="Panel/Scale Layer Modifier"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 14.0
+offset_right = 109.0
+offset_bottom = 30.0
+min_value = -50.0
+max_value = 50.0
+ticks_on_borders = true
+
+[node name="ScaleMenuPanel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -164.0
+offset_right = 157.0
+offset_bottom = -12.0
+theme = SubResource("Theme_m4p54")

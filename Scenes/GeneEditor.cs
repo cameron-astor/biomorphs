@@ -12,9 +12,13 @@ public partial class GeneEditor : Control
 	public delegate void SentGenesEventHandler(Genes g);
 
 	// UI elements
-	Control depth, scale, color, colorVariation, angleRange, radiusRange, nodesRange, polygonRange;
-	Label depthLabel, scaleLabel, colorVariationLabel, angleRangeLabel, radiusRangeLabel, nodesRangeLabel, polygonRangeLabel;
-	Slider depthSlider, scaleSlider, colorVariationSlider, angleRangeMin, angleRangeMax, radiusRangeMin, radiusRangeMax,
+	Control depth, scale, scaleVariation, scaleLayerMod, color, colorVariation, angleRange, radiusRange, nodesRange, polygonRange;
+	Label depthLabel, 
+		  scaleLabel, scaleVariationLabel, scaleLayerModLabel, 
+		  colorVariationLabel, angleRangeLabel, radiusRangeLabel, nodesRangeLabel, polygonRangeLabel;
+	Slider depthSlider, 
+		   scaleSlider, scaleVariationSlider, scaleLayerModSlider,
+		   colorVariationSlider, angleRangeMin, angleRangeMax, radiusRangeMin, radiusRangeMax,
 		   nodesRangeMin, nodesRangeMax, polygonRangeMin, polygonRangeMax;
 	ColorPickerButton colorPicker;	
 	Button generate, randomize;
@@ -25,44 +29,52 @@ public partial class GeneEditor : Control
 		// Get references to UI elements
 
 		// Depth
-		depth = (Control) this.GetNode("Panel/Depth");
+		depth = (Control) this.GetNode("%Depth");
 		depthLabel = (Label) depth.GetNode("Label");
 		depthSlider = (Slider) depth.GetNode("HSlider");
 
 		// Scale
-		scale = (Control) this.GetNode("Panel/Scale");
+		scale = (Control) this.GetNode("%Scale");
 		scaleLabel = (Label) scale.GetNode("Label");
 		scaleSlider = (Slider) scale.GetNode("HSlider");
 
+		scaleVariation = (Control) this.GetNode("%Scale Variation");
+		scaleVariationLabel = (Label) scaleVariation.GetNode("Label");
+		scaleVariationSlider = (Slider) scaleVariation.GetNode("HSlider");
+
+		scaleLayerMod = (Control) this.GetNode("%Scale Layer Modifier");
+		scaleLayerModLabel = (Label) scaleLayerMod.GetNode("Label");
+		scaleLayerModSlider = (Slider) scaleLayerMod.GetNode("HSlider");
+
 		// Color
-		color = (Control) this.GetNode("Panel/Color");
+		color = (Control) this.GetNode("%Color");
 		colorPicker = (ColorPickerButton) color.GetNode("ColorPickerButton");
 
 		// Color variation
-		colorVariation = (Control) this.GetNode("Panel/Color Variation");
+		colorVariation = (Control) this.GetNode("%Color Variation");
 		colorVariationLabel = (Label) colorVariation.GetNode("Label");
 		colorVariationSlider = (Slider) colorVariation.GetNode("HSlider");
 
 		// Angle range
-		angleRange = (Control) this.GetNode("Panel/Angle Range");
+		angleRange = (Control) this.GetNode("%Angle Range");
 		angleRangeLabel = (Label) angleRange.GetNode("Label");
 		angleRangeMin = (Slider) angleRange.GetNode("Min"); 
 		angleRangeMax = (Slider) angleRange.GetNode("Max");
 
 		// Radius range
-		radiusRange = (Control) this.GetNode("Panel/Radius Range");
+		radiusRange = (Control) this.GetNode("%Radius Range");
 		radiusRangeLabel = (Label) radiusRange.GetNode("Label");
 		radiusRangeMin = (Slider) radiusRange.GetNode("Min"); 
 		radiusRangeMax = (Slider) radiusRange.GetNode("Max");
 
 		// Nodes range
-		nodesRange = (Control) this.GetNode("Panel/Nodes Range");
+		nodesRange = (Control) this.GetNode("%Nodes Range");
 		nodesRangeLabel = (Label) nodesRange.GetNode("Label");
 		nodesRangeMin = (Slider) nodesRange.GetNode("Min"); 
 		nodesRangeMax = (Slider) nodesRange.GetNode("Max");
 
 		// Polygon range
-		polygonRange = (Control) this.GetNode("Panel/Polygon Sides Range");
+		polygonRange = (Control) this.GetNode("%Polygon Sides Range");
 		polygonRangeLabel = (Label) polygonRange.GetNode("Label");
 		polygonRangeMin = (Slider) polygonRange.GetNode("Min"); 
 		polygonRangeMax = (Slider) polygonRange.GetNode("Max");
@@ -85,7 +97,11 @@ public partial class GeneEditor : Control
 	{
 
 		depthLabel.Text = "Depth: " + depthSlider.Value;
+
 		scaleLabel.Text = "Scale: " + scaleSlider.Value;
+		scaleLayerModLabel.Text = "Scale Layer Modifier: " + scaleLayerModSlider.Value;
+		scaleVariationLabel.Text = "Scale Variation: " + scaleVariationSlider.Value;
+
 		colorVariationLabel.Text = "Color Variation: " + colorVariationSlider.Value;
 
 		// Angle
@@ -134,8 +150,8 @@ public partial class GeneEditor : Control
 
 
 		// TESTING NEW GENE ATTRIBUTES
-		g.setGeneAttribute(Genome.GENE_ATTRIBUTES.SCALE_VARIATION, 0);
-		g.setGeneAttribute(Genome.GENE_ATTRIBUTES.SCALE_LAYER_MODIFIER, -10);
+		g.setGeneAttribute(Genome.GENE_ATTRIBUTES.SCALE_VARIATION, (int) scaleVariationSlider.Value);
+		g.setGeneAttribute(Genome.GENE_ATTRIBUTES.SCALE_LAYER_MODIFIER, (int) scaleLayerModSlider.Value);
 
 
 

@@ -6,6 +6,7 @@ public partial class Biomorph : Node2D
 {
 
 	const int POLYGON_MIN_SIZE = 5;
+	const int MAX_NODES = 100;
 
 	private PackedScene biomorphStructureScene;
 	private PackedScene genesScene;
@@ -14,6 +15,10 @@ public partial class Biomorph : Node2D
 	private Genes genes;
 	private BiomorphStructure structure;
 	private RandomNumberGenerator rng;
+
+
+	// Biomorph structural parameters
+	
 
 
 	// Constructor
@@ -41,6 +46,7 @@ public partial class Biomorph : Node2D
 
 	}
 
+	// TODO: Enforce node limit constant
 	private void createBiomorph()
 	{
 
